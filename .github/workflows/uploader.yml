@@ -1,0 +1,28 @@
+name: Hindi Uploader
+
+on:
+  workflow_dispatch: # manual trigger
+  schedule:
+    - cron: "0 */6 * * *" # every 6 hours
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install rclone
+        run: |
+          curl -Of https://downloads.rclone.org/rclone-current-linux-amd64.zip
+          unzip rclone-current-linux-amd64.zip
+          cd rclone-*-linux-amd64
+          sudo cp rclone /usr/bin/
+          rclone version
+
+      - name: Build docker image
+        run: docker build -t hindi-uploader .
+
+      - name: Run uploader
+        run: docker run --rm hindi-uploader
