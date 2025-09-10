@@ -1,4 +1,4 @@
-name: Hindi Uploader
+name: Uploader
 
 on:
   workflow_dispatch: # manual trigger
@@ -13,6 +13,16 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
       - name: Install rclone
         run: |
           curl -Of https://downloads.rclone.org/rclone-current-linux-amd64.zip
@@ -21,8 +31,17 @@ jobs:
           sudo cp rclone /usr/bin/
           rclone version
 
-      - name: Build docker image
-        run: docker build -t hindi-uploader .
+      - name: Configure rclone
+        run: |
+          mkdir -p ~/.config/rclone
+          echo "${{ secrets.RCLONE_CONF }}" > ~/.config/rclone/rclone.conf
+
+      - name: Download JSON file from Google Drive
+        run: |
+          wget "https://drive.google.com/uc?export=download&id=1VB9C9l38_PvxZAWs3fUtUw9bKKEavPBu" -O hindi_channels.json
 
       - name: Run uploader
-        run: docker run --rm hindi-uploader
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: |
+          python uploader.py
