@@ -1,7 +1,6 @@
 name: Uploader
 
 on:
-  # Run manually
   workflow_dispatch:
     inputs:
       max_concurrent:
@@ -13,70 +12,67 @@ on:
         description: 'Google Drive JSON URL (optional - will use default if not provided)'
         required: false
         type: string
-  
-  # Run on schedule (every 6 hours)
+
   schedule:
     - cron: '0 */6 * * *'
-  
-  # Run on push to main branch (for testing)
+
   push:
     branches: [ main ]
-    paths: 
+    paths:
       - 'uploader.py'
-      - '.github/workflows/telegram-uploader.yml'
+      - '.github/workflows/uploader.yml'
 
 jobs:
   upload-movies:
     runs-on: ubuntu-latest
-    timeout-minutes: 360  # 6 hours timeout
-    
+    timeout-minutes: 360
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    
-    - name: Cache pip dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    
-    - name: Create downloads directory
-      run: mkdir -p downloads
-    
-    - name: Run movie uploader
-      env:
-        SESSION_STRING: ${{ secrets.TELEGRAM_SESSION_STRING }}
-        API_ID: ${{ secrets.TELEGRAM_API_ID }}
-        API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
-        GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
-        MONGODB_URI: ${{ secrets.MONGODB_URI }}
-        GDRIVE_JSON_URL: ${{ github.event.inputs.gdrive_url || secrets.DEFAULT_GDRIVE_URL }}
-        MAX_CONCURRENT: ${{ github.event.inputs.max_concurrent || '2' }}
-      run: |
-        python uploader.py
-    
-    - name: Upload logs on failure
-      if: failure()
-      uses: actions/upload-artifact@v3
-      with:
-        name: uploader-logs
-        path: uploader.log
-        retention-days: 7
-    
-    - name: Clean up downloads
-      if: always()
-      run: |
-        rm -rf downloads/
-        rm -f movies_data.json
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create downloads directory
+        run: mkdir -p downloads
+
+      - name: Run movie uploader
+        env:
+          SESSION_STRING: ${{ secrets.TELEGRAM_SESSION_STRING }}
+          API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          GDRIVE_JSON_URL: ${{ github.event.inputs.gdrive_url || secrets.DEFAULT_GDRIVE_URL }}
+          MAX_CONCURRENT: ${{ github.event.inputs.max_concurrent || '2' }}
+        run: python uploader.py
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uploader-logs
+          path: uploader.log
+          retention-days: 7
+
+      - name: Clean up downloads
+        if: always()
+        run: |
+          rm -rf downloads/
+          rm -f movies_data.json
