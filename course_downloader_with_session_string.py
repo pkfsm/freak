@@ -173,8 +173,8 @@ class CourseDownloaderOptimized:
         """Upload file to Telegram using Pyrogram with session string"""
         try:
             logger.info(f"📤 Uploading to Telegram: {os.path.basename(file_path)}")
-            API_ID = int(os.getenv('API_ID'))
-            API_HASH = os.getenv('API_HASH')
+            API_ID = 3477714
+            API_HASH = "1264d2d7d397c4635147ee25ab5808d1"
             # Create client using session string
             app = Client(
                 session_string=TELEGRAM_SESSION_STRING,
