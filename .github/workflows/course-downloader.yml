@@ -61,15 +61,15 @@ jobs:
     - name: Run course downloader
       env:
         # ClassPlus API Token
-        CLASSPLUS_ACCESS_TOKEN: ${{ secrets.CLASSPLUS_ACCESS_TOKEN }}
+        # CLASSPLUS_ACCESS_TOKEN: ${{ secrets.CLASSPLUS_ACCESS_TOKEN }}
 
         # Telegram Session String
-        TELEGRAM_SESSION_STRING: ${{ secrets.TELEGRAM_SESSION_STRING }}
+        TELEGRAM_SESSION_STRING: ${{ secrets.SESSION_STRING }}
 
         # Course Configuration
         COURSE_ID: ${{ github.event.inputs.course_id || '520227' }}
         FOLDER_ID: ${{ github.event.inputs.folder_id || '25558299' }}
-        CHAT_ID: ${{ github.event.inputs.chat_id || 'me' }}
+        CHAT_ID: ${{ github.event.inputs.chat_id || '-1002968554908' }}
       run: |
         python course_downloader_github_actions.py
 
