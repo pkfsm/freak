@@ -29,7 +29,7 @@ class CourseDownloaderOptimized:
         self.telegram_session_string = os.getenv('SESSION_STRING')
         self.course_id = os.getenv('COURSE_ID', '520227')
         self.folder_id = os.getenv('FOLDER_ID', '25558299')
-        self.chat_id = os.getenv('GROUP_ID', -1002968554908)
+        self.chat_id = -1002814164827
 
         # Video quality preference (480p, 720p, 240p)
         self.preferred_quality = os.getenv('VIDEO_QUALITY', '240P')
@@ -188,13 +188,13 @@ class CourseDownloaderOptimized:
 
         # Quality priority order (fallback sequence)
         quality_priority = {
+            '240p': ['240p', '360p', '480p'],
             '480p': ['480p', '360p', '720p', '240p'],
             '720p': ['720p', '480p', '1080p', '360p', '240p'],
             '360p': ['360p', '480p', '240p', '720p'],
-            '240p': ['240p', '360p', '480p'],
         }
 
-        priority_list = quality_priority.get(preferred_quality, ['480p', '720p', '360p', '240p'])
+        priority_list = quality_priority.get(preferred_quality, ['240p','480p', '720p', '360p'])
 
         # Try to find exact match first
         for quality in priority_list:
