@@ -177,7 +177,7 @@ class CourseDownloaderOptimized:
             API_HASH = "1264d2d7d397c4635147ee25ab5808d1"
             # Create client using session string
             app = Client(
-                session_string=TELEGRAM_SESSION_STRING,
+                session_string=SESSION_STRING,
                 api_id=API_ID,
                 api_hash=API_HASH,
                 name="uploader"
