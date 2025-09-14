@@ -68,7 +68,7 @@ jobs:
 
         # Course Configuration
         COURSE_ID: ${{ github.event.inputs.course_id || '520227' }}
-        FOLDER_ID: ${{ github.event.inputs.folder_id || '25558299' }
+        FOLDER_ID: ${{ github.event.inputs.folder_id || '25558299' }}
       run: |
         python course_downloader_with_session_string.py
 
