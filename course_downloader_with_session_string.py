@@ -29,7 +29,7 @@ class CourseDownloaderOptimized:
         self.telegram_session_string = os.getenv('SESSION_STRING')
         self.course_id = os.getenv('COURSE_ID', '520227')
         self.folder_id = os.getenv('FOLDER_ID', '25558299')
-        self.chat_id = -1002814164827
+        self.chat_id = "@jiko4325"
 
         # Video quality preference (480p, 720p, 240p)
         self.preferred_quality = os.getenv('VIDEO_QUALITY', '240P')
