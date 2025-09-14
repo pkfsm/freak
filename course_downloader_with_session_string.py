@@ -32,7 +32,7 @@ class CourseDownloaderOptimized:
         self.chat_id = os.getenv('GROUP_ID', -1002968554908)
 
         # Video quality preference (480p, 720p, 240p)
-        self.preferred_quality = os.getenv('VIDEO_QUALITY', '480p')
+        self.preferred_quality = os.getenv('VIDEO_QUALITY', '240P')
 
         # Validate required environment variables
         if not self.access_token:
