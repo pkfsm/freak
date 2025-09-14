@@ -1,0 +1,92 @@
+name: ClassPlus Course Downloader
+
+on:
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      course_id:
+        description: 'Course ID to download'
+        required: true
+        default: '520227'
+        type: string
+      folder_id:
+        description: 'Folder ID to download from'
+        required: true
+        default: '25558299'
+        type: string
+      chat_id:
+        description: 'Telegram Chat ID (use "me" for saved messages)'
+        required: false
+        default: 'me'
+        type: string
+
+  # Scheduled trigger (runs every day at 2:00 AM UTC)
+  # Uncomment and modify the schedule as needed
+  # schedule:
+  #   - cron: '0 2 * * *'  # Daily at 2:00 AM UTC
+
+  # Trigger on push to main branch (for testing)
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'course_downloader_with_session_string.py'
+      - '.github/workflows/course-downloader.yml'
+
+jobs:
+  download-course:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyrogram requests tgcrypto
+
+    - name: Create downloads directory
+      run: mkdir -p downloads
+
+    - name: Run course downloader
+      env:
+        # ClassPlus API Token
+        CLASSPLUS_ACCESS_TOKEN: ${{ secrets.CLASSPLUS_ACCESS_TOKEN }}
+
+        # Telegram Session String
+        TELEGRAM_SESSION_STRING: ${{ secrets.TELEGRAM_SESSION_STRING }}
+
+        # Course Configuration
+        COURSE_ID: ${{ github.event.inputs.course_id || '520227' }}
+        FOLDER_ID: ${{ github.event.inputs.folder_id || '25558299' }}
+        CHAT_ID: ${{ github.event.inputs.chat_id || 'me' }}
+      run: |
+        python course_downloader_github_actions.py
+
+    - name: Upload logs as artifact
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: download-logs-${{ github.run_number }}
+        path: |
+          *.log
+          downloads/
+        retention-days: 7
+
+    - name: Clean up downloaded files
+      if: always()
+      run: |
+        # Clean up large files to avoid storage issues
+        find . -name "*.mp4" -size +100M -delete
+        find . -name "*.pdf" -size +50M -delete
+        ls -la
