@@ -17,8 +17,8 @@ on:
       chat_id:
         description: 'Telegram Chat ID (use "me" for saved messages)'
         required: false
-        default: 'me'
-        type: string
+        default: '-1002968554908'
+        type: int
 
   # Scheduled trigger (runs every day at 2:00 AM UTC)
   # Uncomment and modify the schedule as needed
@@ -68,10 +68,9 @@ jobs:
 
         # Course Configuration
         COURSE_ID: ${{ github.event.inputs.course_id || '520227' }}
-        FOLDER_ID: ${{ github.event.inputs.folder_id || '25558299' }}
-        CHAT_ID: ${{ github.event.inputs.chat_id || '-1002968554908' }}
+        FOLDER_ID: ${{ github.event.inputs.folder_id || '25558299' }
       run: |
-        python course_downloader_github_actions.py
+        python course_downloader_with_session_string.py
 
     - name: Upload logs as artifact
       if: always()
