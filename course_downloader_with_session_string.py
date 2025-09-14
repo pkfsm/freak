@@ -28,7 +28,7 @@ class CourseDownloaderOptimized:
         self.telegram_session_string = os.getenv('SESSION_STRING')
         self.course_id = os.getenv('COURSE_ID', '520227')
         self.folder_id = os.getenv('FOLDER_ID', '25558299')
-        self.chat_id = os.getenv('GROUP_ID', 'me')
+        self.chat_id = os.getenv('GROUP_ID', -1002968554908)
 
         # Validate required environment variables
         if not self.access_token:
@@ -177,7 +177,7 @@ class CourseDownloaderOptimized:
             API_HASH = os.getenv('API_HASH')
             # Create client using session string
             app = Client(
-                session_string=SESSION_STRING,
+                session_string=TELEGRAM_SESSION_STRING,
                 api_id=API_ID,
                 api_hash=API_HASH,
                 name="uploader"
