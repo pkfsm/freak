@@ -179,7 +179,7 @@ class CourseDownloaderOptimized:
 
         return 'unknown'
 
-    def select_best_quality_stream(self, streams, preferred_quality='480p'):
+    def select_best_quality_stream(self, streams, preferred_quality='240p'):
         """Select the best available stream based on preferred quality"""
         if not streams:
             return None
