@@ -28,7 +28,7 @@ class CourseDownloaderOptimized:
         self.access_token = "eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMxMjk1MDMzLCJvcmdJZCI6MzI1MjUxLCJ0eXBlIjoxLCJtb2JpbGUiOiI5MTkxOTk4MjA3ODEiLCJuYW1lIjoiRmFyaGFuYSBNdWtodGFyIiwiZW1haWwiOiJ0ZXNsYWZiZ0BnbWFpbC5jb20iLCJpc0ludGVybmF0aW9uYWwiOjAsImRlZmF1bHRMYW5ndWFnZSI6IkVOIiwiY291bnRyeUNvZGUiOiJJTiIsImNvdW50cnlJU08iOiI5MSIsInRpbWV6b25lIjoiR01UKzU6MzAiLCJpc0RpeSI6dHJ1ZSwib3JnQ29kZSI6ImN4YXpjIiwiaXNEaXlTdWJhZG1pbiI6MCwiZmluZ2VycHJpbnRJZCI6IjI1ZjYxMzYyMTFjYjU2ZDQ2MjYxNTNmNTZmOGI0NDA0IiwiaWF0IjoxNzU3ODU3NDIxLCJleHAiOjE3NTg0NjIyMjF9.c7i4nnctIjO8hWfPNsSD8fgVTKcDfg9KFdPcGgAKfi-1lvHtGVrSBKm1CQIlTZty"
         self.telegram_session_string = os.getenv('SESSION_STRING')
         self.course_id = os.getenv('COURSE_ID', '520227')
-        self.folder_id = os.getenv('FOLDER_ID', '25558299')
+        self.folder_id = os.getenv('FOLDER_ID', '26309262')
         self.chat_id = "@jiko4325"
 
         # Video quality preference (480p, 720p, 240p)
