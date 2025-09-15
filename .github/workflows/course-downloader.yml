@@ -12,7 +12,7 @@ on:
       folder_id:
         description: 'Folder ID to download from'
         required: true
-        default: '25558299'
+        default: '26309262'
         type: string
       chat_id:
         description: 'Telegram Chat ID (use "me" for saved messages)'
@@ -68,7 +68,7 @@ jobs:
 
         # Course Configuration
         COURSE_ID: ${{ github.event.inputs.course_id || '520227' }}
-        FOLDER_ID: ${{ github.event.inputs.folder_id || '25558299' }}
+        FOLDER_ID: ${{ github.event.inputs.folder_id || '26309262' }}
       run: |
         python course_downloader_with_session_string.py
 
